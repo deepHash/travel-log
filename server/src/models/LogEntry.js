@@ -17,8 +17,12 @@ var logEntrySchema = new Schema({
   image: String,
   latitude: Number,
   longitude: Number,
-  created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now },
+  visitDate: {
+    required: true,
+    type: Date,
+  },
+},{
+  timestamps: true,
 });
 
 const LogEntry = mongoose.model('LogEntry', logEntrySchema);
