@@ -3,8 +3,9 @@ import ReactMapGL, { Marker, Popup} from 'react-map-gl';
 import { listLogEntries } from './API';
 
 const App = () => {
-  const [logEntries, setLogEntries] = useState([])
-  const [showPopup, setShowPopup] = useState({})
+  const [logEntries, setLogEntries] = useState([]);
+  const [showPopup, setShowPopup] = useState({});
+  const [addEntryLocation, setAddEntryLocation] = useState();
   const [viewport, setViewport] = useState({
     width: '100vw',
     height: '100vh',
@@ -20,29 +21,38 @@ const App = () => {
     })()
   }, []);
 
+  const showAddMarkerPopup = (event) => {
+    const [ longitude, latitude ] = event.lngLat;
+    setAddEntryLocation({
+      latitude,
+      longitude,
+    });
+    console.log(addEntryLocation);
+  };
+
   return (
     <ReactMapGL 
     {...viewport}      
     mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
     mapStyle={"mapbox://styles/itsesis/ck7n9husc04891ithqvxu54w9"}
     onViewportChange={setViewport}
+    onDblClick={showAddMarkerPopup}
     >
       {
         logEntries.map(entry =>(
-          <div 
-          onClick={() => setShowPopup({
-            ...showPopup,
-            [entry._id]: true,
-          })}>
+          <div
+            key={entry._id}
+            onClick={() => setShowPopup({
+                [entry._id]: true,
+              })}>
             <Marker
-              key={entry._id} 
-              latitude={entry.latitude} longitude={entry.longitude} 
-              offsetLeft={-20} offsetTop={-10}>
+              latitude={entry.latitude} longitude={entry.longitude}
+            >
               <div>
                 <img className="marker"
                     style={{height: `${6 * viewport.zoom}px`,
                             width: `${6 * viewport.zoom}px` }}
-                      src="https://i.imgur.com/O93KG5X.png" //@ToDo - replace image to svg
+                      src="https://i.imgur.com/kE0tQhN.png"
                       alt="marker"
                 />              
               </div>
@@ -54,15 +64,17 @@ const App = () => {
                 longitude={entry.longitude} 
                 closeButton={true}
                 closeOnClick={false}
-                onClose={() => this.setState({showPopup: false})}
-                anchor="top" >
-                <div>
+                onClose={() => setShowPopup({})}
+                anchor="right" >
+                <div className="popup">
                   <h3>{entry.title}</h3>
                   <p>{entry.comments}</p>
+                  <p>{entry.rating ? <small>Rating: {entry.rating}/10</small> : null}</p>
+                  <small>Visited on: {new Date(entry.visitDate).toLocaleDateString()}</small>
+                  {entry.image && <img src={entry.image} alt={entry.title} />}
                 </div>
               </Popup>
-
-              ) : null
+            ) : null
             }
           </div>
         ))

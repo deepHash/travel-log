@@ -7,6 +7,19 @@ body {
 }
 
 .marker{
-  color: red;
+  color: #ff0000;
   transform: translate(-50%, -100%);
 } 
+
+.popup{
+  max-width: 40vw;
+  padding: 1rem;
+}
+
+.popup img {
+  height: 200px;
+  width: auto;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
