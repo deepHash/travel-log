@@ -23,3 +23,10 @@ body {
   display: block;
   margin: 0 auto;
 }
+
+.entryForm button, label, input, textarea{
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}

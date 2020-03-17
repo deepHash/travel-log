@@ -18,7 +18,7 @@ var logEntrySchema = new Schema({
   latitude: Number,
   longitude: Number,
   visitDate: {
-    required: true,
+    required: false,
     type: Date,
   },
 },{

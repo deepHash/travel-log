@@ -14,13 +14,15 @@ const App = () => {
     longitude: 11.576124,
     zoom: 3.5
   });
-
+  
   useEffect(() => {
-    (async () => {
-      const logEntries = await listLogEntries();
-      setLogEntries(logEntries)
-    })()
+    getEntries();
   }, []);
+
+  const getEntries = async () => {
+    const logEntries = await listLogEntries();
+    setLogEntries(logEntries)
+  }
 
   const showAddMarkerPopup = (event) => {
     const [longitude, latitude] = event.lngLat;
@@ -100,11 +102,15 @@ const App = () => {
               latitude={addEntryLocation.latitude}
               longitude={addEntryLocation.longitude}
               closeButton={true}
-              closeOnClick={false}
+              closeOnClick={true}
               onClose={() => setShowPopup({})}
               anchor="right" >
               <div className="popup">
-                <FormEntry latLon={addEntryLocation}/>
+                <FormEntry onClose={() => {
+                  setAddEntryLocation(null);
+                  setShowPopup({});
+                  getEntries();
+                }} latLon={addEntryLocation} />
               </div>
             </Popup>
           </div>

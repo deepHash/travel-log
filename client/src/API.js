@@ -5,12 +5,11 @@ export async function listLogEntries(){
 
 export async function addNewLogEntry(data){
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/logs`, {
-        method: "post",
+        method: 'POST',
         headers: {
-            'Accept': 'application/json',
-            'Contect-Type': 'application/json'
+            'content-type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     });
-    return response;
+    return response.json();
 }
